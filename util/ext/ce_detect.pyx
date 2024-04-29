@@ -11,7 +11,7 @@ cdef extern from "detector.h":
 
 def launchDetector1(xs, int maxlookback, float alpha):
     xs = np.asarray(xs, dtype='float64')
-    print("using %d datapoints" % len(xs))
+    # print("using %d datapoints" % len(xs))
 
     cdef double sd = 1
     cdef int n = len(xs)
@@ -20,7 +20,7 @@ def launchDetector1(xs, int maxlookback, float alpha):
 
     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
     if n>10000:
-        print("ERROR: n=%d exceeds max permitted series size" % n)
+        # print("ERROR: n=%d exceeds max permitted series size" % n)
         return
 
     # outputs:
@@ -29,11 +29,11 @@ def launchDetector1(xs, int maxlookback, float alpha):
     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))
     if succ>0:
-        print("ERROR: C detector failure")
+        # print("ERROR: C detector failure")
         return
-    # print(outt)
+    # # print(outt)
     outnum = outt.tolist().index(0)
-    # print(outnum)
+    # # print(outnum)
     # NOTE: detector.c outputs 0-indexed window positions, inclusive.
     # This conversion here makes the interval [s,e).
     # true timestamp can be obtained simply by multiply it by window size
@@ -43,7 +43,7 @@ def launchDetector1(xs, int maxlookback, float alpha):
 def launchDetector2(xs, float sigma2, int maxlookback, float alpha, int printing=1):
     # printing=1 means that more details will be printed, 0="silent"
     xs = np.asarray(xs, dtype='float64')
-    print("using %d datapoints" % len(xs))
+    # print("using %d datapoints" % len(xs))
 
     # Type conversion, not sure if needed
     cdef double csigma2 = sigma2
@@ -52,7 +52,7 @@ def launchDetector2(xs, float sigma2, int maxlookback, float alpha, int printing
 
     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
     if n>10000:
-        print("ERROR: n=%d exceeds max permitted series size" % n)
+        # print("ERROR: n=%d exceeds max permitted series size" % n)
         return
 
     # outputs:
@@ -61,11 +61,11 @@ def launchDetector2(xs, float sigma2, int maxlookback, float alpha, int printing
     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
     succ = alg2_var(<double*> np.PyArray_DATA(xs), n, maxlookback, csigma2, penalty, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt), printing)
     if succ>0:
-        print("ERROR: C detector failure")
+        # print("ERROR: C detector failure")
         return
-    # print(outst)
-    # print(oute)
-    # print(outt)
+    # # print(outst)
+    # # print(oute)
+    # # print(outt)
     outnum = outt.tolist().index(0)
     # NOTE: detector.c outputs 0-indexed window positions, inclusive.
     # This conversion here makes the interval [s,e).

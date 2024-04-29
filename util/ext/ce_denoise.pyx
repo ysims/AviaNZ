@@ -77,7 +77,7 @@ def BestTree2(wp,threshold,costfn='threshold'):
                         cost[count] = ce_getcost(<double*> np.PyArray_DATA(node), node.shape[0], threshold, '*', step)
 
                 count += 1
-        print("Best basis selected in %.5f s" % (time.time() - opstartingtime))
+        # print("Best basis selected in %.5f s" % (time.time() - opstartingtime))
 
         # Compute the best tree using those cost values
 
@@ -153,7 +153,7 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
     bestleavesset = set(bestleaves)
     N = len(bestleavesset)
     if list(bestleavesset) != bestleaves:
-        print("Warning: best leaves were not sorted, make sure threshold order is the same")
+        # print("Warning: best leaves were not sorted, make sure threshold order is the same")
         # could return an error
 
     # Input checks
@@ -165,7 +165,7 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
         # fix at some point.
         T = len(oldtree[0]) // blocklen
         if T<1:
-            print("ERROR: data shorter than the block size")
+            # print("ERROR: data shorter than the block size")
             return 1
     else:
         # will keep data in a single block
@@ -173,35 +173,35 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
 
     if np.ndim(threshold)==0:
         threshold = threshold * np.ones((N,T))
-        print("Applying constant threshold over nodes and time")
+        # print("Applying constant threshold over nodes and time")
     elif type(threshold) is np.ndarray:
         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):
             threshold = threshold * np.ones((N,T))
-            print("Applying constant threshold over nodes and time")
+            # print("Applying constant threshold over nodes and time")
         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):
-            print(np.shape(threshold))
+            # print(np.shape(threshold))
             threshold = np.transpose(threshold * np.ones((T,N)))
-            print(np.shape(threshold))
-            print("Applying node-specific, time-constant threshold")
+            # print(np.shape(threshold))
+            # print("Applying node-specific, time-constant threshold")
         elif np.shape(threshold)==(N,T):
             if blocklen==0:
-                print("ERROR: blocklen must be provided for NxT thresholding")
+                # print("ERROR: blocklen must be provided for NxT thresholding")
                 return 1
             else:
-                print("will use blocks of", blocklen, "samples")
-            print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
+                # print("will use blocks of", blocklen, "samples")
+            # print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
         else:
-            print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
+            # print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
             return 1
     else:
-        print("ERROR: wrong type of threshold provided")
+        # print("ERROR: wrong type of threshold provided")
         return 1
 
     # a dumb check, but important
     if np.shape(threshold)!=(N,T):
-        print("ERROR: something went wrong in denoising")
-        print(np.shape(threshold))
+        # print("ERROR: something went wrong in denoising")
+        # print(np.shape(threshold))
         return 1
 
     thrtype_ce = -1
@@ -210,12 +210,12 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
     elif thrtype=="hard":
         thrtype_ce = 2
     else:
-        print("ERROR: type of threshold not recognized")
+        # print("ERROR: type of threshold not recognized")
         return 1
 
     # Main loop
-    #print("Bestleaves", bestleaves)
-    #print("thresholds", threshold[:,0])
+    ## print("Bestleaves", bestleaves)
+    ## print("thresholds", threshold[:,0])
     for node in range(len(oldtree)):
         if node in bestleavesset:
             # then keep & threshold (inplace)
@@ -279,10 +279,10 @@ def reconstruct(np.ndarray data, int node, np.ndarray wv_rec_hi, np.ndarray wv_r
     cdef int datau_len, wv_hi_len, wv_lo_len, data_len
 
     if lvl==0:
-        print("Warning: reconstruction from level 0 requested")
+        # print("Warning: reconstruction from level 0 requested")
         return data
     elif lvl<0:
-        print("ERROR: suggested level %d < 0" % lvl)
+        # print("ERROR: suggested level %d < 0" % lvl)
         return
 
     wv_hi_len = len(wv_rec_hi)
@@ -325,7 +325,7 @@ def reconstruct(np.ndarray data, int node, np.ndarray wv_rec_hi, np.ndarray wv_r
                 <double*> np.PyArray_DATA(datau), datau_len)
 
         if c_exit_code!=0:
-            print("ERROR: Cythonized convolution failed")
+            # print("ERROR: Cythonized convolution failed")
             return
         
         # move output back on top of input for next loop

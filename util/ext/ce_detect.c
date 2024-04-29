@@ -4465,7 +4465,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
  * 
  * def launchDetector1(xs, int maxlookback, float alpha):             # <<<<<<<<<<<<<<
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  */
 
 /* Python wrapper */
@@ -4648,7 +4648,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  * 
  * def launchDetector1(xs, int maxlookback, float alpha):
  *     xs = np.asarray(xs, dtype='float64')             # <<<<<<<<<<<<<<
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
@@ -4675,7 +4675,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
   /* "ce_detect.pyx":14
  * def launchDetector1(xs, int maxlookback, float alpha):
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))             # <<<<<<<<<<<<<<
+ *     # print("using %d datapoints" % len(xs))             # <<<<<<<<<<<<<<
  * 
  *     cdef double sd = 1
  */
@@ -4691,7 +4691,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "ce_detect.pyx":16
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  * 
  *     cdef double sd = 1             # <<<<<<<<<<<<<<
  *     cdef int n = len(xs)
@@ -4770,7 +4770,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"             # <<<<<<<<<<<<<<
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(__pyx_assertions_enabled())) {
@@ -4818,7 +4818,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:             # <<<<<<<<<<<<<<
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return
  */
   __pyx_t_9 = (__pyx_v_n > 0x2710);
@@ -4827,7 +4827,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
     /* "ce_detect.pyx":23
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)             # <<<<<<<<<<<<<<
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)             # <<<<<<<<<<<<<<
  *         return
  * 
  */
@@ -4843,7 +4843,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
 
     /* "ce_detect.pyx":24
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return             # <<<<<<<<<<<<<<
  * 
  *     # outputs:
@@ -4856,7 +4856,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:             # <<<<<<<<<<<<<<
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return
  */
   }
@@ -5001,7 +5001,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))             # <<<<<<<<<<<<<<
  *     if succ>0:
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  */
   if (!(likely(((__pyx_v_xs) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_xs, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 30, __pyx_L1_error)
   __pyx_v_succ = alg1_var(((double *)PyArray_DATA(((PyArrayObject *)__pyx_v_xs))), __pyx_v_n, __pyx_v_maxlookback, __pyx_v_mu0, __pyx_v_penalty, ((int *)PyArray_DATA(((PyArrayObject *)__pyx_v_outst))), ((int *)PyArray_DATA(((PyArrayObject *)__pyx_v_oute))), ((char *)PyArray_DATA(((PyArrayObject *)__pyx_v_outt))));
@@ -5010,7 +5010,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))
  *     if succ>0:             # <<<<<<<<<<<<<<
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return
  */
   __pyx_t_9 = (__pyx_v_succ > 0);
@@ -5019,9 +5019,9 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
     /* "ce_detect.pyx":32
  *     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))
  *     if succ>0:
- *         print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
  *         return
- *     # print(outt)
+ *     # # print(outt)
  */
     __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -5029,9 +5029,9 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
 
     /* "ce_detect.pyx":33
  *     if succ>0:
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return             # <<<<<<<<<<<<<<
- *     # print(outt)
+ *     # # print(outt)
  *     outnum = outt.tolist().index(0)
  */
     __Pyx_XDECREF(__pyx_r);
@@ -5042,16 +5042,16 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))
  *     if succ>0:             # <<<<<<<<<<<<<<
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return
  */
   }
 
   /* "ce_detect.pyx":35
  *         return
- *     # print(outt)
+ *     # # print(outt)
  *     outnum = outt.tolist().index(0)             # <<<<<<<<<<<<<<
- *     # print(outnum)
+ *     # # print(outnum)
  *     # NOTE: detector.c outputs 0-indexed window positions, inclusive.
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_outt), __pyx_n_s_tolist); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
@@ -5192,7 +5192,7 @@ static PyObject *__pyx_pf_9ce_detect_launchDetector1(CYTHON_UNUSED PyObject *__p
  * 
  * def launchDetector1(xs, int maxlookback, float alpha):             # <<<<<<<<<<<<<<
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  */
 
   /* function exit code */
@@ -5451,7 +5451,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  * def launchDetector2(xs, float sigma2, int maxlookback, float alpha, int printing=1):
  *     # printing=1 means that more details will be printed, 0="silent"
  *     xs = np.asarray(xs, dtype='float64')             # <<<<<<<<<<<<<<
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
@@ -5478,7 +5478,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
   /* "ce_detect.pyx":46
  *     # printing=1 means that more details will be printed, 0="silent"
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))             # <<<<<<<<<<<<<<
+ *     # print("using %d datapoints" % len(xs))             # <<<<<<<<<<<<<<
  * 
  *     # Type conversion, not sure if needed
  */
@@ -5564,7 +5564,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"             # <<<<<<<<<<<<<<
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(__pyx_assertions_enabled())) {
@@ -5612,7 +5612,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:             # <<<<<<<<<<<<<<
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return
  */
   __pyx_t_9 = (__pyx_v_n > 0x2710);
@@ -5621,7 +5621,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
     /* "ce_detect.pyx":55
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)             # <<<<<<<<<<<<<<
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)             # <<<<<<<<<<<<<<
  *         return
  * 
  */
@@ -5637,7 +5637,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
 
     /* "ce_detect.pyx":56
  *     if n>10000:
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return             # <<<<<<<<<<<<<<
  * 
  *     # outputs:
@@ -5650,7 +5650,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  * 
  *     assert np.min(xs)>0, "ERROR: all datapoints must be strictly > 0 for variance detection"
  *     if n>10000:             # <<<<<<<<<<<<<<
- *         print("ERROR: n=%d exceeds max permitted series size" % n)
+ *         # print("ERROR: n=%d exceeds max permitted series size" % n)
  *         return
  */
   }
@@ -5795,7 +5795,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg2_var(<double*> np.PyArray_DATA(xs), n, maxlookback, csigma2, penalty, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt), printing)             # <<<<<<<<<<<<<<
  *     if succ>0:
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  */
   if (!(likely(((__pyx_v_xs) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_xs, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 62, __pyx_L1_error)
   __pyx_v_succ = alg2_var(((double *)PyArray_DATA(((PyArrayObject *)__pyx_v_xs))), __pyx_v_n, __pyx_v_maxlookback, __pyx_v_csigma2, __pyx_v_penalty, __pyx_v_penalty, ((int *)PyArray_DATA(((PyArrayObject *)__pyx_v_outst))), ((int *)PyArray_DATA(((PyArrayObject *)__pyx_v_oute))), ((char *)PyArray_DATA(((PyArrayObject *)__pyx_v_outt))), __pyx_v_printing);
@@ -5804,7 +5804,7 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg2_var(<double*> np.PyArray_DATA(xs), n, maxlookback, csigma2, penalty, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt), printing)
  *     if succ>0:             # <<<<<<<<<<<<<<
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return
  */
   __pyx_t_9 = (__pyx_v_succ > 0);
@@ -5813,9 +5813,9 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
     /* "ce_detect.pyx":64
  *     succ = alg2_var(<double*> np.PyArray_DATA(xs), n, maxlookback, csigma2, penalty, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt), printing)
  *     if succ>0:
- *         print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
  *         return
- *     # print(outst)
+ *     # # print(outst)
  */
     __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -5823,10 +5823,10 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
 
     /* "ce_detect.pyx":65
  *     if succ>0:
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return             # <<<<<<<<<<<<<<
- *     # print(outst)
- *     # print(oute)
+ *     # # print(outst)
+ *     # # print(oute)
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
@@ -5836,14 +5836,14 @@ static PyObject *__pyx_pf_9ce_detect_2launchDetector2(CYTHON_UNUSED PyObject *__
  *     cdef np.ndarray[np.uint8_t] outt = np.zeros(n, dtype='uint8')
  *     succ = alg2_var(<double*> np.PyArray_DATA(xs), n, maxlookback, csigma2, penalty, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt), printing)
  *     if succ>0:             # <<<<<<<<<<<<<<
- *         print("ERROR: C detector failure")
+ *         # print("ERROR: C detector failure")
  *         return
  */
   }
 
   /* "ce_detect.pyx":69
- *     # print(oute)
- *     # print(outt)
+ *     # # print(oute)
+ *     # # print(outt)
  *     outnum = outt.tolist().index(0)             # <<<<<<<<<<<<<<
  *     # NOTE: detector.c outputs 0-indexed window positions, inclusive.
  *     # This conversion here makes the interval [s,e).
@@ -6136,9 +6136,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_detect.pyx":32
  *     succ = alg1_var(<double*> np.PyArray_DATA(xs), n, maxlookback, mu0, penalty, <int*> np.PyArray_DATA(outst), <int*> np.PyArray_DATA(oute), <char*> np.PyArray_DATA(outt))
  *     if succ>0:
- *         print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: C detector failure")             # <<<<<<<<<<<<<<
  *         return
- *     # print(outt)
+ *     # # print(outt)
  */
   __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_ERROR_C_detector_failure); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
@@ -6149,7 +6149,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * def launchDetector1(xs, int maxlookback, float alpha):             # <<<<<<<<<<<<<<
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  */
   __pyx_tuple__5 = PyTuple_Pack(13, __pyx_n_s_xs, __pyx_n_s_maxlookback, __pyx_n_s_alpha, __pyx_n_s_sd, __pyx_n_s_n, __pyx_n_s_penalty, __pyx_n_s_mu0, __pyx_n_s_outst, __pyx_n_s_oute, __pyx_n_s_outt, __pyx_n_s_succ, __pyx_n_s_outnum, __pyx_n_s_res); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
@@ -6613,7 +6613,7 @@ if (!__Pyx_RefNanny) {
  * 
  * def launchDetector1(xs, int maxlookback, float alpha):             # <<<<<<<<<<<<<<
  *     xs = np.asarray(xs, dtype='float64')
- *     print("using %d datapoints" % len(xs))
+ *     # print("using %d datapoints" % len(xs))
  */
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_9ce_detect_1launchDetector1, 0, __pyx_n_s_launchDetector1, NULL, __pyx_n_s_ce_detect, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

@@ -18,8 +18,8 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import gc, os, re, fnmatch
-
+import gc, os, re
+import time
 import numpy as np
 
 import util.SignalProc as SignalProc
@@ -27,7 +27,6 @@ import util.Segment as Segment
 import util.WaveletSegment as WaveletSegment
 import util.SupportClasses as SupportClasses
 import util.wavio as wavio
-import time
 
 
 class AviaNZ_batchProcess:
@@ -36,7 +35,6 @@ class AviaNZ_batchProcess:
     def __init__(
         self,
         configdir="",
-        sdir="",
         recogniser=None,
         maxgap=1.0,
         minlen=0.5,
@@ -52,22 +50,17 @@ class AviaNZ_batchProcess:
         self.filtersDir = os.path.join(configdir, self.config["FiltersDir"])
         self.FilterDicts = self.ConfigLoader.filters(self.filtersDir)
 
-        self.dirName = sdir
-
         # Parameters for "Any sound" post-proc:
         self.maxgap = maxgap
         self.minlen = minlen
         self.maxlen = maxlen
 
         self.species = [recogniser]
-        self.detect()
 
-    def detect(self):
+    def detect(self, filename):
         # This is the function that does the work.
         # Chooses the filters and sampling regime to use.
         # Then works through the directory list, and processes each file.
-
-        # REQUIRES: species, dirName, and wind must be set on self
 
         if "Any sound" in self.species:
             self.method = "Default"
@@ -97,22 +90,11 @@ class AviaNZ_batchProcess:
             self.FilterDicts, self.filtersDir, self.species
         )
 
-        # LIST ALL FILES that will be processed (either wav or bmp, depending on mode)
-        allwavs = []
-        for root, _, files in os.walk(str(self.dirName)):
-            for filename in files:
-                if filename.lower().endswith(".wav"):
-                    allwavs.append(os.path.join(root, filename))
-        total = len(allwavs)
-        print("Found %d files" % total)
+        allwavs = [filename]
 
         # Parse the user-set time window to process
         timeWindow_s = 0
         timeWindow_e = 0
-
-        # LOG FILE is read here
-        # note: important to log all analysis settings here
-        self.filesDone = []
 
         if self.method != "Intermittent sampling":
             settings = [self.method, timeWindow_s, timeWindow_e, False]
@@ -125,45 +107,12 @@ class AviaNZ_batchProcess:
                 self.config["protocolInterval"],
             ]
 
-        print(self.method, settings)
-        self.log = SupportClasses.Log(
-            os.path.join(self.dirName, "LastAnalysisLog.txt"), speciesStr, settings
-        )
-
         # Always process all files
         self.filesDone = []
 
-        # update log: delete everything (by opening in overwrite mode),
-        # reprint old headers,
-        # print current header (or old if resuming),
-        # print old file list if resuming.
-        self.log.file = open(self.log.filepath, "w")
-        if speciesStr not in ["Any sound", "Intermittent sampling"]:
-            self.log.reprintOld()
-            # else single-sp runs should be deleted anyway
+        self.mainloop(allwavs, 1, speciesStr, filters, settings)
 
-        self.log.appendHeader(
-            header=None, species=self.log.species, settings=self.log.settings
-        )
-
-        self.mainloop(allwavs, total, speciesStr, filters, settings)
-
-        # delete old results (xlsx)
-        # ! WARNING: any Detection...xlsx files will be DELETED,
-        # ! ANYWHERE INSIDE the specified dir, recursively
-        print("Removing old Excel files...")
-        for root, _, files in os.walk(str(self.dirName)):
-            for filename in files:
-                filenamef = os.path.join(root, filename)
-                if fnmatch.fnmatch(filenamef, "*DetectionSummary_*.xlsx"):
-                    print("Removing excel file %s" % filenamef)
-                    os.remove(filenamef)
-
-        # END of processing and exporting. Final cleanup
-        self.log.file.close()
-
-        print("Processed all %d files" % total)
-        return 0
+        return self.segments
 
     def mainloop(self, allwavs, total, speciesStr, filters, settings):
         # MAIN PROCESSING starts here
@@ -179,20 +128,6 @@ class AviaNZ_batchProcess:
             processingTimeStart = time.time()
             hh, mm = divmod(processingTime * (total - cnt) / 60, 60)
             cnt = cnt + 1
-            progrtext = "file %d / %d. Time remaining: %d h %.2f min" % (
-                cnt,
-                total,
-                hh,
-                mm,
-            )
-
-            print("*** Processing" + progrtext + " ***")
-
-            # check if file not empty
-            if os.stat(filename).st_size < 1000:
-                print("File %s empty, skipping" % filename)
-                self.log.appendFile(filename)
-                continue
 
             # test the selected time window if it is a doc recording
             DOCRecording = re.search(r"(\d{6})_(\d{6})", os.path.basename(filename))
@@ -216,7 +151,6 @@ class AviaNZ_batchProcess:
                 inWindow = True
 
             if DOCRecording and not inWindow:
-                print("Skipping out-of-time-window recording")
                 self.log.appendFile(filename)
                 continue
 
@@ -248,24 +182,7 @@ class AviaNZ_batchProcess:
                     gc.collect()
 
                 # Main work is done here:
-                print("Segmenting...")
                 self.detectFile(speciesStr, filters)
-                print("Segments in this file: ", self.segments)
-
-            # export segments
-            print("%d new segments marked" % len(self.segments))
-            cleanexit = self.saveAnnotation(self.segments)
-
-            if cleanexit != 1:
-                print("Warning: could not save segments!")
-
-            # Log success for this file and update ProgrDlg
-            self.log.appendFile(filename)
-
-            # track how long it took to process one file:
-            processingTime = time.time() - processingTimeStart
-            print("File processed in", processingTime)
-            # END of audio batch processing
 
     def addRegularSegments(self):
         """Perform the Hartley bodge: add 10s segments every minute."""
@@ -277,14 +194,7 @@ class AviaNZ_batchProcess:
         self.segments.metadata["Duration"] = nseconds
         i = 0
         segments = []
-        print(
-            "Adding segments (%d s every %d s) to %s"
-            % (
-                self.config["protocolSize"],
-                self.config["protocolInterval"],
-                str(self.filename),
-            )
-        )
+
         while i < nseconds:
             segments.append([i, i + self.config["protocolSize"]])
             i += self.config["protocolInterval"]
@@ -331,13 +241,11 @@ class AviaNZ_batchProcess:
 
         # Actual segmentation happens here:
         for page in range(numPages):
-            print("Segmenting page %d / %d" % (page + 1, numPages))
             start = page * samplesInPage
             end = min(start + samplesInPage, self.datalength)
             thisPageLen = (end - start) / self.sampleRate
 
             if thisPageLen < 2 and (self.method != "Click" and self.method != "Bats"):
-                print("Warning: can't process short file ends (%.2f s)" % thisPageLen)
                 continue
 
             # Process
@@ -356,8 +264,6 @@ class AviaNZ_batchProcess:
                 # thisPageSegs = self.seg.bestSegments()
                 thisPageSegs = self.seg.medianClip(thr=3.5)
                 # Post-process
-                print("Segments detected: ", len(thisPageSegs))
-                print("Post-processing...")
                 post = Segment.PostProcess(
                     configdir=self.configdir,
                     audioData=self.audiodata[start:end],
@@ -393,7 +299,6 @@ class AviaNZ_batchProcess:
                     )
 
                 for speciesix in range(len(filters)):
-                    print("Working with recogniser:", filters[speciesix])
                     # Bird detection by wavelets. Choose the right wavelet method:
                     if (
                         "method" not in filters[speciesix]
@@ -414,8 +319,6 @@ class AviaNZ_batchProcess:
 
                     # Post-process:
                     # CNN-classify, delete windy, rainy segments, check for FundFreq, merge gaps etc.
-                    print("Segments detected (all subfilters): ", thisPageSegs)
-                    print("Post-processing...")
                     # postProcess currently operates on single-level list of segments,
                     # so we run it over subfilters for wavelets:
                     spInfo = filters[speciesix]
@@ -440,6 +343,7 @@ class AviaNZ_batchProcess:
                             spInfo["species"],
                             spInfo["Filters"][filtix],
                         )
+        return len(postsegs)
 
     def postProcFull(self, segments, spInfo, filtix, start, end, CNNmodel):
         """Full bird-style postprocessing (CNN, joinGaps...)
@@ -458,17 +362,14 @@ class AviaNZ_batchProcess:
             CNNmodel=CNNmodel,
             cert=50,
         )
-        print("Segments detected after WF: ", len(segments[filtix]))
 
         if CNNmodel:
-            print("Post-processing with CNN")
             post.CNN()
 
         # Fund freq and merging. Only do for standard wavelet filter currently:
         # (for median clipping, gap joining and some short segment cleanup was already done in WaveletSegment)
         if "method" not in spInfo or spInfo["method"] == "wv":
             if "F0" in subfilter and "F0Range" in subfilter and subfilter["F0"]:
-                print("Checking for fundamental frequency...")
                 post.fundamentalFrq()
 
             post.joinGaps(maxgap=subfilter["TimeRange"][3])
@@ -482,7 +383,6 @@ class AviaNZ_batchProcess:
             for seg in post.segments:
                 seg[0][0] += start / self.sampleRate
                 seg[0][1] += start / self.sampleRate
-        print("After post-processing: ", post.segments)
         return post.segments
 
     def makeSegments(
@@ -540,7 +440,6 @@ class AviaNZ_batchProcess:
     def loadFile(self, species, anysound=False, impMask=True):
         """species: list of recognizer names, or ["Any sound"].
         Species names will be wiped based on these."""
-        print(self.filename)
         # Create an instance of the Signal Processing class
         if not hasattr(self, "sp"):
             self.sp = SignalProc.SignalProc(
@@ -553,14 +452,6 @@ class AviaNZ_batchProcess:
         self.audiodata = self.sp.data
 
         self.datalength = np.shape(self.audiodata)[0]
-        print(
-            "Read %d samples, %f s at %d Hz"
-            % (
-                len(self.audiodata),
-                float(self.datalength) / self.sampleRate,
-                self.sampleRate,
-            )
-        )
 
         # Read in stored segments (useful when doing multi-species)
         self.segments = Segment.SegmentList()
@@ -578,7 +469,6 @@ class AviaNZ_batchProcess:
                 float(self.datalength) / self.sampleRate
             )
             # wipe all segments:
-            print("Wiping all previous segments")
             self.segments.clear()
         else:
             self.segments.parseJSON(
@@ -589,13 +479,11 @@ class AviaNZ_batchProcess:
                 # shorthand for double-checking that it's not "Any Sound" etc
                 if sp in self.FilterDicts:
                     spname = self.FilterDicts[sp]["species"]
-                    print("Wiping species", spname)
                     oldsegs = self.segments.getSpecies(spname)
                     for i in reversed(oldsegs):
                         wipeAll = self.segments[i].wipeSpecies(spname)
                         if wipeAll:
                             del self.segments[i]
-            print("%d segments loaded from .data file" % len(self.segments))
 
         # impulse masking (on by default)
         if impMask:

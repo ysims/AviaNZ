@@ -102,23 +102,10 @@ class SignalProc:
         self.minFreqShow = max(self.minFreq, self.minFreqShow)
         self.maxFreqShow = min(self.maxFreq, self.maxFreqShow)
 
-        if not silent:
-            if QtMM:
-                print(
-                    "Detected format: %d channels, %d Hz, %d bit samples"
-                    % (
-                        self.audioFormat.channelCount(),
-                        self.audioFormat.sampleRate(),
-                        self.audioFormat.sampleSize(),
-                    )
-                )
-
     def resample(self, target):
         if len(self.data) == 0:
-            print("Warning: no data set to resmample")
             return
         if target == self.sampleRate:
-            print("No resampling needed")
             return
 
         self.data = librosa.resample(
@@ -128,8 +115,6 @@ class SignalProc:
         self.sampleRate = target
         if QtMM:
             self.audioFormat.setSampleRate(target)
-        # else:
-        # self.audioFormat['sampleRate'] = target
 
         self.minFreq = 0
         self.maxFreq = self.sampleRate // 2
@@ -168,11 +153,7 @@ class SignalProc:
             b += 0.15 / (2 - b)
         elif b > 20.1:
             b += 0.22 * (b - 20.1)
-        # inds = np.where(b<2)
-        # print(inds)
-        # b[inds] += 0.15/(2-b[inds])
-        # inds = np.where(b>20.1)
-        # b[inds] += 0.22*(b[inds]-20.1)
+
         return b
 
     def convertBarktoHz(self, b):
@@ -188,7 +169,6 @@ class SignalProc:
         # Transform the spectrogram to mel or bark scale
         if maxfreq is None:
             maxfreq = self.sampleRate / 2
-        print(filter, nfilters, minfreq, maxfreq, normalise)
 
         if filter == "mel":
             filter_points = np.linspace(
@@ -340,10 +320,6 @@ class SignalProc:
             print("ERROR: attempted to calculate spectrogram without audiodata")
             return
 
-        # S = librosa.feature.melspectrogram(self.data, sr=self.sampleRate, power=1)
-        # log_S = librosa.amplitude_to_db(S, ref=np.max)
-        # self.sg = librosa.pcen(S * (2**31))
-        # return self.sg.T
         if window_width is None:
             window_width = self.window_width
         if incr is None:
@@ -417,7 +393,6 @@ class SignalProc:
         elif window == "Ones":
             window = np.ones(window_width)
         else:
-            print("Unknown window, using Hann")
             window = 0.5 * (
                 1 - np.cos(2 * np.pi * np.arange(window_width) / (window_width - 1))
             )
@@ -446,8 +421,6 @@ class SignalProc:
                     out[counter : counter + 1, :] = Sk[window_width // 2 :].T
                     counter += 1
                 self.sg = np.fliplr(out)
-            else:
-                print("Option not available")
         elif sgType == "Reassigned":
             ft = np.zeros((len(starts), window_width), dtype="complex")
             ft2 = np.zeros((len(starts), window_width), dtype="complex")
@@ -486,7 +459,6 @@ class SignalProc:
 
             self.sg = np.absolute(self.sg[:, : window_width // 2])  # + 0.1
 
-            print("SG range:", np.min(self.sg), np.max(self.sg))
         else:
             if need_even:
                 starts = np.hstack(
@@ -526,11 +498,9 @@ class SignalProc:
                         winddata = window * self.sg[i : i + window_width]
                         ft[i // incr, :] = fft.fft(winddata)
                 self.sg = np.absolute(ft)
-            print(np.min(self.sg), np.max(self.sg))
 
             del ft
             gc.collect()
-            # sg = (ft*np.conj(ft))[:,window_width // 2:].T
 
         if sgScale == "Mel Frequency":
             self.convertToMel(
@@ -581,8 +551,6 @@ class SignalProc:
             M = signal.lfilter([s], [1, s - 1], self.sg)
             smooth = (eps + M) ** (-gain)
             return (self.sg * smooth + bias) ** power - bias**power
-        else:
-            print("ERROR: unrecognized transformation", tr)
 
     def Stockwell(self):
         # Stockwell transform (Brown et al. version)
@@ -617,7 +585,6 @@ class SignalProc:
         end = min(end, sampleRate / 2)
 
         if start == 0 and end == sampleRate / 2:
-            print("No filter needed!")
             return data
 
         nyquist = sampleRate / 2
@@ -682,7 +649,6 @@ class SignalProc:
             highStop = (1 + highPass) / 2
 
         if lowPass == 0 and highPass == 1:
-            print("No filter needed!")
             return data
         elif lowPass == 0:
             # Low pass
@@ -711,7 +677,6 @@ class SignalProc:
         if filterUnstable:
             # redesign to SOS and filter.
             # uses order=30 because why not
-            print("single-stage filter unstable, switching to SOS filtering")
             if lowPass == 0:
                 sos = signal.butter(30, wN, btype="lowpass", output="sos")
             elif highPass == 1:
@@ -749,7 +714,6 @@ class SignalProc:
         highPass = min(high + 0.002, 1)
 
         if lowPass == 0 and highPass == 1:
-            print("No filter needed!")
             return data
         elif lowPass == 0:
             # Low pass
@@ -771,7 +735,6 @@ class SignalProc:
         if filterUnstable:
             # redesign to SOS and filter.
             # uses order=30 because why not
-            print("single-stage filter unstable, switching to SOS filtering")
             if lowPass == 0:
                 sos = signal.butter(30, highPass, btype="lowpass", output="sos")
             elif highPass == 1:
@@ -888,7 +851,6 @@ class SignalProc:
         elif window == "Ones":
             window = np.ones(size)
         else:
-            print("Unknown window, using Hann")
             window = 0.5 * (1 - np.cos(2 * np.pi * np.arange(size) / (size - 1)))
 
         est_start = int(size // 2) - 1
@@ -906,7 +868,11 @@ class SignalProc:
             if calculate_offset and i > 0:
                 offset_size = size - incr
                 if offset_size <= 0:
-                    # print("WARNING: Large step size >50\% detected! " "This code works best with high overlap - try " "with 75% or greater")
+                    print(
+                        "WARNING: Large step size >50\% detected! "
+                        "This code works best with high overlap - try "
+                        "with 75% or greater"
+                    )
                     offset_size = incr
                 offset = self.xcorr_offset(
                     wave[wave_start : wave_start + offset_size],
@@ -1059,7 +1025,6 @@ class SignalProc:
         # helper function to parse output for plotting spectral derivs.
         sd = self.spectral_derivative(self.window_width, self.incr, 2, 5.0)
         x, y = np.where(sd > 0)
-        # print(y)
 
         # remove points beyond frq range to show
         y1 = [i * self.sampleRate // 2 / np.shape(self.sg)[1] for i in y]
@@ -1086,7 +1051,6 @@ class SignalProc:
         # reliable estimation (i.e max period such that 3 periods
         # fit in the F0 window):
         minReliableFreq = self.sampleRate / (Wsamples / 3)
-        print("Warning: F0 estimation below %d Hz will be unreliable" % minReliableFreq)
         # returns pitch in Hz for each window of Wsamples/2
         # over the entire data provided (so full page here)
         thr = 0.5
@@ -1096,7 +1060,7 @@ class SignalProc:
         # find out which marks should be visible
         ind = np.logical_and(pitch > self.minFreqShow + 50, pitch < self.maxFreqShow)
         if not np.any(ind):
-            print("Warning: no fund. freq. identified in this page")
+            # print("Warning: no fund. freq. identified in this page")
             return
 
         # ffreq is calculated over windows of size W
@@ -1175,7 +1139,7 @@ class SignalProc:
         # colmedians = np.median(sg, axis=1)
         # colmax = np.max(sg,axis=1)
         # inds = np.where(colmax>thr*colmedians)
-        # print(len(inds))
+        # # print(len(inds))
         # points[inds, colmaxinds[inds]] = 1
 
         # just mark the argmax position in each column
@@ -1248,7 +1212,7 @@ class SignalProc:
         import math
 
         imspec = self.sg[:, ::8].T
-        print("click", np.shape(imspec))
+        # print("click", np.shape(imspec))
         df = self.sampleRate // 2 / (np.shape(imspec)[0] + 1)  # frequency increment
         # up_len=math.ceil(0.05/dt) #0.5 second lenth in indices divided by 11
         up_len = 17
@@ -1304,7 +1268,7 @@ class SignalProc:
                 else:
                     end = inds[start - 1]
             last = end
-            print(first, last)
+            # print(first, last)
             return [first, last]
         else:
             return None
@@ -1341,12 +1305,12 @@ class SignalProc:
                     sg[i - width : i + width + 1, j - width : j + width + 1]
                 )
 
-        print(sgnew)
+        # print(sgnew)
         return sgnew
 
     def mark_rain(self, sg, thr=0.9):
         row, col = np.shape(sg.T)
-        print(row, col)
+        # print(row, col)
         inds = np.where(sg > thr * np.max(sg))
         longest = np.zeros(col)
         start = np.zeros(col)
@@ -1371,7 +1335,7 @@ class SignalProc:
         for c in range(col):
             if longest[c] > 10:
                 newsg[c, start[c] : start[c] + longest[c]] = 1
-        print(longest)
+        # print(longest)
         return newsg.T
 
     def denoise(self, alg, start=None, end=None, width=None):
@@ -1380,7 +1344,7 @@ class SignalProc:
         width - median parameter, from Denoise dialog
         """
         if str(alg) == "Wavelets":
-            print("Don't use this interface for wavelets")
+            # print("Don't use this interface for wavelets")
             return
         elif str(alg) == "Bandpass":
             self.data = self.bandpassFilter(
@@ -1401,9 +1365,9 @@ class SignalProc:
         :param fp: frequency proportion to consider it as an impulse (cols of the spectrogram)
         :return: audiodata
         """
-        print("Impulse masking...")
+        # print("Impulse masking...")
         imps = self.impulse_cal(fs=self.sampleRate, engp=engp, fp=fp)
-        print("Samples to mask: ", len(self.data) - np.sum(imps))
+        # print("Samples to mask: ", len(self.data) - np.sum(imps))
         # Mask only the affected samples
         return np.multiply(self.data, imps)
 
@@ -1526,7 +1490,7 @@ class SignalProc:
             sgend = sgstart + real_spec_width
             # Skip the last bits if they don't comprise a full frame:
             if sgend > np.shape(self.sg)[0]:
-                print("Warning: dropping frame at", sgend, n)
+                # print("Warning: dropping frame at", sgend, n)
                 # Alternatively could adjust:
                 # sgstart = np.shape(sp.sg)[0] - real_spec_width
                 # sgend = np.shape(sp.sg)[0]
@@ -1573,7 +1537,7 @@ class SignalProc:
             sgend = sgstart + real_spec_width
             # Skip the last bits if they don't comprise a full frame:
             if sgend > np.shape(self.sg)[0]:
-                print("Warning: dropping frame at", sgend, n)
+                # print("Warning: dropping frame at", sgend, n)
                 # Alternatively could adjust:
                 # sgstart = np.shape(sp.sg)[0] - real_spec_width
                 # sgend = np.shape(sp.sg)[0]

@@ -55,7 +55,7 @@ class WaveletSegment:
         5. wpmode - old/new/aa to indicate no/partial/full antialias
         6. wind - if True, will produce a WP with all nodes to be used in de-winding
         """
-        if data is None or data.size == 0:
+        if data is None or data == [] or len(data) == 0:
             print("ERROR: data must be provided for WS")
             return
 
@@ -142,7 +142,6 @@ class WaveletSegment:
             self.WF.WaveletPacket(
                 allnodes, mode="symmetric", antialias=True, antialiasFilter=True
             )
-        print("File loaded in", time.time() - opst)
 
         # no return, just preloaded self.WF
 
@@ -162,7 +161,7 @@ class WaveletSegment:
         ### find segments with each subfilter separately
         detected_allsubf = []
         for subfilter in self.spInfo[filtnum]["Filters"]:
-            print("-- Identifying calls using subfilter %s --" % subfilter["calltype"])
+            # print("-- Identifying calls using subfilter %s --" % subfilter["calltype"])
             goodnodes = subfilter["WaveletParams"]["nodes"]
 
             detected = self.detectCalls(
@@ -179,7 +178,7 @@ class WaveletSegment:
             detected = segmenter.convert01(detected)
             detected = segmenter.joinGaps(detected, maxgap=0)
             detected_allsubf.append(detected)
-        print("--- Wavelet segmenting completed in %.3f s ---" % (time.time() - opst))
+        # print("--- Wavelet segmenting completed in %.3f s ---" % (time.time() - opst))
         return detected_allsubf
 
     def waveletSegmentChp(
@@ -1788,7 +1787,6 @@ class WaveletSegment:
         """
         # resample (implies this hasn't been done by node adjustment before)
         if sampleRate != fsOut:
-            print("Resampling from", sampleRate, "to", fsOut)
             if not fastRes:
                 data = librosa.resample(
                     data, orig_sr=sampleRate, target_sr=fsOut, res_type="kaiser_best"

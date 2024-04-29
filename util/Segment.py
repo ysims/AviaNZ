@@ -137,7 +137,6 @@ class Segment(list):
         # note that removeLabel will re-add a Don't Know in the end, so can't just check the final label.
         for lab in reversed(self[4]):
             if lab["species"] == species:
-                print("Wiping label", lab)
                 self.removeLabel(lab["species"], lab["certainty"])
         return deletedAll
 
@@ -274,8 +273,6 @@ class SegmentList(list):
         # first segment stores metadata
         self.metadata = dict()
         if isinstance(annots[0], list) and annots[0][0] == -1:
-            if not silent:
-                print("old format metadata detected")
             self.metadata = {"Operator": annots[0][2], "Reviewer": annots[0][3]}
             # when file is loaded, true duration can be passed. Otherwise,
             # some old files have duration in samples, so need a rough check
@@ -328,19 +325,12 @@ class SegmentList(list):
                 print("ERROR: annotation in wrong format:", annot)
                 return
 
-            # This could be turned on to skip segments outside Duration bounds,
-            # but may result in deleting actually useful annotations if Duration was wrong
-            # if annot[0] > self.metadata["Duration"] and annot[1] > self.metadata["Duration"]:
-            #     print("Warning: ignoring segment outside set duration", annot)
-            #     continue
-
             # deal with old formats here, so that the Segment class
             # could require (and validate) clean input
 
             # Early version of AviaNZ stored freqs as values between 0 and 1.
             # The .1 is to take care of rounding errors
             if 0 < annot[2] < 1.1 and 0 < annot[3] < 1.1:
-                print("Warning: ignoring old-format frequency marks")
                 annot[2] = 0
                 annot[3] = 0
 
@@ -366,8 +356,6 @@ class SegmentList(list):
                 annot[4] = listofdicts
 
             self.addSegment(annot)
-        if not silent:
-            print("%d segments read" % len(self))
 
     def addSegment(self, segment):
         """Just a cleaner wrapper to allow adding segments quicker.
@@ -560,21 +548,11 @@ class SegmentList(list):
 
         # deal with empty files
         thisSpSegs = self.getSpecies(species)
-        # if len(thisSpSegs)==0:
-        #     print("Warning: no annotations for this species found in file", filename)
-        #     # delete the file to avoid problems with old GT files
-        #     try:
-        #         os.remove(eFile)
-        #     except Exception:
-        #         pass
-        #     return
 
         GT = np.tile([0, 0, None], (duration, 1))
         # fill first column with "time"
         GT[:, 0] = range(1, duration + 1)
         GT[:, 0] = GT[:, 0] * resolution
-
-        print("exporting GT with resolution", resolution)
 
         for segix in thisSpSegs:
             seg = self[segix]
@@ -585,17 +563,6 @@ class SegmentList(list):
                 GT[i, 1] = 1
                 GT[i, 2] = species
         GT = GT.tolist()
-
-        # now save the resulting txt:
-        with open(eFile, "w") as f:
-            for l, el in enumerate(GT):
-                string = "\t".join(map(str, el))
-                for item in string:
-                    f.write(item)
-                f.write("\n")
-            f.write("\n")
-            print("output successfully saved to file", eFile)
-
 
 class Segmenter:
     """This class implements six forms of segmentation for the AviaNZ interface:
@@ -1115,15 +1082,12 @@ class Segmenter:
                     sg[i, j] > thr * colmedians[j]
                 ):
                     clipped[i, j] = 1
-        print("Found", np.sum(clipped), "pixels")
 
         # This is the stencil for the closing and dilation. It's a 5x5 diamond. Can also use a 3x3 diamond
         diamond = np.zeros((5, 5), dtype=int)
         diamond[2, :] = 1
         diamond[:, 2] = 1
         diamond[1, 1] = diamond[1, 3] = diamond[3, 1] = diamond[3, 3] = 1
-        # diamond[2, 1:4] = 1
-        # diamond[1:4, 2] = 1
 
         clipped = spi.binary_closing(clipped, structure=diamond).astype(int)
         clipped = spi.binary_dilation(clipped, structure=diamond).astype(int)
@@ -1219,7 +1183,6 @@ class Segmenter:
         # A sample rate of 16000 and a min fundamental frequency of 100Hz would then therefore suggest reasonably short windows
         minwin = float(self.fs) / minfreq * minperiods
         if W < minwin:
-            print("Extending window width to ", minwin)
             W = int(minwin)
 
         # returns pitch in Hz for each window of Wsamples/2.
@@ -1400,18 +1363,14 @@ class PostProcess:
         Post-proc with CNN model, self.segments get updated
         """
         if not self.CNNmodel:
-            print("ERROR: no CNN model specified")
             return
         if len(self.segments) == 0:
-            print("No segments to classify by CNN")
             return
         ctkey = int(
             list(self.CNNoutputs.keys())[
                 list(self.CNNoutputs.values()).index(self.calltype)
             ]
         )
-        print("call type: ", self.calltype)
-
         batchsize = 5  # TODO: read from learning parameters file
 
         # spectrograms of pre-cut segs are tiny bit shorter than expected
@@ -1429,7 +1388,6 @@ class PostProcess:
 
         for ix in reversed(range(len(self.segments))):
             seg = self.segments[ix]
-            print("\n--- Segment", seg)
             # expand the segment if it's smaller than 1 frame
             mincalllength = self.CNNwindow
             duration = seg[0][1] - seg[0][0]
@@ -1477,13 +1435,11 @@ class PostProcess:
                 self.CNNinputdim[1],
                 1,
             ):
-                print("ERROR: features shape incorrect", featuress.shape)
                 raise AssertionError
             numframes = featuress.shape[0]
 
             # predict with CNN
             if numframes > 0:
-                # probs = self.CNNmodel(tf.convert_to_tensor(featuress, dtype=tf.float32))  # This might lead to OOM error, therefore show batches
                 probs = np.empty((numframes, len(self.CNNoutputs)))
                 for start in range(0, numframes, batchsize):
                     end = min(numframes, start + batchsize)
@@ -1511,16 +1467,11 @@ class PostProcess:
                 # Zero images from this segment, very unlikely to be a true seg.
                 probs = 0
                 certainty = 0
-            print("probabilities: ", probs)
 
             if certainty == 0:
-                print("Deleted by CNN")
                 del self.segments[ix]
             else:
-                print("Not deleted by CNN")
                 self.segments[ix][-1] = certainty
-
-        print("Segments remaining after CNN: ", len(self.segments))
 
     def activelength(self, probs, thr):
         """
@@ -1553,7 +1504,6 @@ class PostProcess:
             if self.CNNwindow >= seg[0][1] - seg[0][0]:
                 print("Current page is smaller than CNN input (%f)" % (self.CNNwindow))
             else:
-                # data = self.audioData[int(seg[0][0]*self.sampleRate):int(seg[0][1]*self.sampleRate)]
                 data = self.audioData
             # generate features for CNN
             sp = SignalProc.SignalProc(
@@ -1659,14 +1609,8 @@ class PostProcess:
                 data=data, sampleRate=self.sampleRate, fn_peak=fn_peak
             )
             if m > windT and not fn:
-                print(seg[0], m, "windy, deleted")
                 newSegments.remove(seg)
-            elif m > windT and fn:
-                print(seg[0], m, "windy, but possible bird call")
-            else:
-                print(seg[0], m, "not windy/possible bird call")
         self.segments = newSegments
-        print("Segments remaining after wind: ", len(self.segments))
 
     def rainClick(self):
         """
@@ -1733,7 +1677,6 @@ class PostProcess:
             # (generally fine for 100 Hz minfreq = 0.3 s minwin)
             minwin = 3 * sp.sampleRate / minfreq
             if Wsamples < minwin:
-                print("Extending window width to ", minwin)
                 Wsamples = int(minwin)
 
             # returns pitch in Hz for each window of Wsamples/2.
@@ -1743,53 +1686,29 @@ class PostProcess:
             pitch = pitch[ind]
 
             if pitch.size == 0:
-                print(
-                    "Segment ",
-                    seg,
-                    " *++ no fundamental freq detected, could be faded call or noise",
-                )
                 del self.segments[segix]
             else:
                 meanF0 = np.mean(pitch)
                 if (meanF0 < self.F0[0]) or (meanF0 > self.F0[1]):
-                    print(
-                        "segment* ",
-                        seg,
-                        meanF0,
-                        pitch,
-                        " *-- fundamental freq is out of range, could be noise",
-                    )
                     del self.segments[segix]
-        print("Segments remaining after fundamental frequency: ", len(self.segments))
 
     # The following are just wrappers for easier parsing of 3-element segment lists:
     # Segmenter class still has its own joinGaps etc which operate on 2-element lists
     def joinGaps(self, maxgap):
         seg = Segmenter()
         self.segments = seg.joinGaps3(self.segments, maxgap=maxgap)
-        print(
-            "Segments remaining after merge (<=%.2f secs): %d"
-            % (maxgap, len(self.segments))
-        )
 
     def deleteShort(self, minlength):
         seg = Segmenter()
         self.segments = seg.deleteShort3(self.segments, minlength=minlength)
-        print(
-            "Segments remaining after deleting short (<%.2f secs): %d"
-            % (minlength, len(self.segments))
-        )
+
 
     def splitLong(self, maxlen):
         seg = Segmenter()
         self.segments = seg.splitLong3(self.segments, maxlen=maxlen)
-        print(
-            "Segments after splitting long segments (>%.2f secs): %d"
-            % (maxlen, len(self.segments))
-        )
+
 
     def checkSegmentOverlap(self):
         # Used for merging call types or different segmenter outputs
         seg = Segmenter()
         self.segments = seg.checkSegmentOverlap3(self.segments)
-        print("Segments produced after merging: %d" % len(self.segments))

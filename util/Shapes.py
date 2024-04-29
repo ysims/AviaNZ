@@ -80,7 +80,7 @@ def stupidShaper(segment, specxunit, specyunit):
     midyrepeated = [midy] * math.floor((segment[1] - segment[0]) / specxunit)
 
     newshape = Shape(segment[0], segment[1], specxunit, midyrepeated, specyunit)
-    # print("Detected shape: ", newshape)
+    # # print("Detected shape: ", newshape)
     return newshape
 
 

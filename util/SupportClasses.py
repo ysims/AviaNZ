@@ -68,7 +68,7 @@ class Log(object):
         if os.path.isfile(path):
             try:
                 f = open(path, "r+")
-                print("Found log file at %s" % path)
+                # print("Found log file at %s" % path)
 
                 lines = [line.rstrip("\n") for line in f]
                 f.close()
@@ -78,7 +78,7 @@ class Log(object):
                 # [freetext, species, settings, [files]]
                 # (basically I'm parsing txt into json because I'm dumb)
                 while lend < len(lines):
-                    # print(lines[lend])
+                    # # print(lines[lend])
                     if len(lines[lend]) > 0:  # there are empty lines too
                         if lines[lend][0] == "#":
                             allans.append(
@@ -105,9 +105,9 @@ class Log(object):
                 # and compare to check if it can be resumed.
                 # store all other analyses for re-printing.
                 for a in allans:
-                    # print(a)
+                    # # print(a)
                     if a[1] == self.species:
-                        print("Resumable analysis found")
+                        # print("Resumable analysis found")
                         # do not reprint this in log
                         if a[2] == self.settings:
                             self.currentHeader = a[0]
@@ -123,7 +123,7 @@ class Log(object):
                 print("ERROR: could not open log at %s" % path)
 
     def appendFile(self, filename):
-        print("Appending %s to log" % filename)
+        # print("Appending %s to log" % filename)
         # convert to path relative to the log file directory
         if os.path.isabs(filename):
             filename = os.path.relpath(filename, os.path.dirname(self.filepath))
@@ -179,7 +179,7 @@ class ConfigLoader(object):
     def config(self, file):
         # At this point, the main config file should already be ensured to exist.
         # It will always be in user configdir, otherwise it would be impossible to find.
-        print("Loading software settings from file %s" % file)
+        # print("Loading software settings from file %s" % file)
         try:
             f = open(file)
             config = json.load(f)
@@ -200,13 +200,13 @@ class ConfigLoader(object):
         named after the corresponding file names.
         bats - include bat filters?
         """
-        print("Loading call filters from folder %s" % dir)
+        # print("Loading call filters from folder %s" % dir)
         try:
             filters = [
                 f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))
             ]
         except Exception:
-            print("Folder %s not found, no filters loaded" % dir)
+            # print("Folder %s not found, no filters loaded" % dir)
             return None
 
         goodfilters = dict()
@@ -257,7 +257,7 @@ class ConfigLoader(object):
                 goodfilters[filtfile[:-4]] = filt
             except Exception as e:
                 print("Could not load filter:", filtfile, e)
-        print("Loaded filters:", list(goodfilters.keys()))
+        # print("Loaded filters:", list(goodfilters.keys()))
         return goodfilters
 
     def CNNmodels(self, filters, dircnn, targetspecies):
@@ -265,7 +265,7 @@ class ConfigLoader(object):
         Filters - dict of loaded filter files
         Targetspecies - list of species names to load
         """
-        print("Loading CNN models from folder %s" % dircnn)
+        # print("Loading CNN models from folder %s" % dircnn)
         targetmodels = dict()
         for species in targetspecies:
             filt = filters[species]
@@ -285,10 +285,6 @@ class ConfigLoader(object):
                             filt["CNN"]["windowInc"],
                             filt["CNN"]["thr"],
                         ]
-                        print(
-                            "Loaded model:",
-                            os.path.join(dircnn, filt["CNN"]["CNN_name"]),
-                        )
                     except Exception as e:
                         print(
                             "Could not load CNN model from file:",
@@ -297,24 +293,14 @@ class ConfigLoader(object):
                         )
                 else:
                     try:
-                        print(os.path.join(dircnn, filt["CNN"]["CNN_name"]) + ".h5")
                         json_file = open(
                             os.path.join(dircnn, filt["CNN"]["CNN_name"]) + ".json", "r"
                         )
                         loaded_model_json = json_file.read()
-                        print(loaded_model_json)
-                        print("**")
                         json_file.close()
                         model = model_from_json(loaded_model_json)
-                        print(model)
-                        print("***")
                         model.load_weights(
                             os.path.join(dircnn, filt["CNN"]["CNN_name"]) + ".h5"
-                        )
-                        print("****")
-                        print(
-                            "Loaded model:",
-                            os.path.join(dircnn, filt["CNN"]["CNN_name"]),
                         )
                         model.compile(
                             loss=filt["CNN"]["loss"],
@@ -348,13 +334,12 @@ class ConfigLoader(object):
                             os.path.join(dircnn, filt["CNN"]["CNN_name"]),
                         )
                         print(e)
-        print("Loaded CNN models:", list(targetmodels.keys()))
         return targetmodels
 
     def shortbl(self, file, configdir):
         # A fallback shortlist will be confirmed to exist in configdir.
         # This list is necessary
-        print("Loading short species list from file %s" % file)
+        # print("Loading short species list from file %s" % file)
         try:
             if os.path.isabs(file):
                 # user-picked files will have absolute paths
@@ -382,7 +367,6 @@ class ConfigLoader(object):
                 return readlist
             except ValueError as e:
                 # if JSON looks corrupt, quit and suggest deleting:
-                print(e)
                 msg = SupportClasses_GUI.MessagePopup(
                     "w",
                     "Bad species list",
@@ -395,7 +379,7 @@ class ConfigLoader(object):
 
         except Exception as e:
             # if file is not found at all, quit, user must recreate the file or change path
-            print(e)
+            # print(e)
             msg = SupportClasses_GUI.MessagePopup(
                 "w",
                 "Bad species list",
@@ -407,7 +391,6 @@ class ConfigLoader(object):
             return None
 
     def longbl(self, file, configdir):
-        print("Loading long species list from file %s" % file)
         try:
             if os.path.isabs(file):
                 # user-picked files will have absolute paths
@@ -417,9 +400,6 @@ class ConfigLoader(object):
                 # to allow looking it up in various OSes.
                 longblfile = os.path.join(configdir, file)
             if not os.path.isfile(longblfile):
-                print(
-                    "Warning: file %s not found, falling back to default" % longblfile
-                )
                 longblfile = os.path.join(configdir, "ListDOCBirds.txt")
 
             try:
@@ -428,7 +408,6 @@ class ConfigLoader(object):
                 json_file.close()
                 return readlist
             except ValueError as e:
-                print(e)
                 msg = SupportClasses_GUI.MessagePopup(
                     "w",
                     "Bad species list",
@@ -440,7 +419,6 @@ class ConfigLoader(object):
                 return None
 
         except Exception as e:
-            print(e)
             msg = SupportClasses_GUI.MessagePopup(
                 "w",
                 "Bad species list",
@@ -452,7 +430,6 @@ class ConfigLoader(object):
             return None
 
     def batl(self, file, configdir):
-        print("Loading bat list from file %s" % file)
         try:
             if os.path.isabs(file):
                 # user-picked files will have absolute paths
@@ -462,7 +439,7 @@ class ConfigLoader(object):
                 # to allow looking it up in various OSes.
                 blfile = os.path.join(configdir, file)
             if not os.path.isfile(blfile):
-                print("Warning: file %s not found, falling back to default" % blfile)
+                # print("Warning: file %s not found, falling back to default" % blfile)
                 blfile = os.path.join(configdir, "ListBats.txt")
 
             try:
@@ -471,7 +448,7 @@ class ConfigLoader(object):
                 json_file.close()
                 return readlist
             except ValueError as e:
-                print(e)
+                # print(e)
                 msg = SupportClasses_GUI.MessagePopup(
                     "w",
                     "Bad species list",
@@ -483,7 +460,7 @@ class ConfigLoader(object):
                 return None
 
         except Exception as e:
-            print(e)
+            # print(e)
             msg = SupportClasses_GUI.MessagePopup(
                 "w",
                 "Bad species list",
@@ -495,7 +472,7 @@ class ConfigLoader(object):
             return None
 
     def learningParams(self, file):
-        print("Loading software settings from file %s" % file)
+        # print("Loading software settings from file %s" % file)
         try:
             configfile = open(file)
             config = json.load(configfile)
@@ -513,7 +490,7 @@ class ConfigLoader(object):
 
     # Dumps the provided JSON array to the corresponding bird file.
     def blwrite(self, content, file, configdir):
-        print("Updating species list in file %s" % file)
+        # print("Updating species list in file %s" % file)
         try:
             if os.path.isabs(file):
                 # user-picked files will have absolute paths
@@ -528,7 +505,7 @@ class ConfigLoader(object):
                 json.dump(content, f, indent=1)
 
         except Exception as e:
-            print(e)
+            # print(e)
             msg = SupportClasses_GUI.MessagePopup(
                 "w",
                 "Unwriteable species list",
@@ -538,7 +515,7 @@ class ConfigLoader(object):
 
     # Dumps the provided JSON array to the corresponding config file.
     def configwrite(self, content, file):
-        print("Saving config to file %s" % file)
+        # print("Saving config to file %s" % file)
         try:
             # will always be an absolute path to the user configdir.
             with open(file, "w") as f:
@@ -600,7 +577,7 @@ class ExcelIO:
                 )
 
                 if DOCRecording:
-                    print("time stamp found", DOCRecording)
+                    # print("time stamp found", DOCRecording)
                     startTimeFile = DOCRecording.group(2)
                     startTimeFile = QTime(
                         int(startTimeFile[:2]),
@@ -759,7 +736,7 @@ class ExcelIO:
             for seg in segl:
                 speciesList.update([lab["species"] for lab in seg[4]])
         speciesList.add("Any sound")
-        print("The following species were detected for export:", speciesList)
+        # print("The following species were detected for export:", speciesList)
 
         # check source .wav file names -
         # ideally, we store relative paths, but that's not possible across drives:
@@ -767,13 +744,13 @@ class ExcelIO:
             try:
                 segl.filename = str(os.path.relpath(segl.filename, dirName))
             except Exception as e:
-                print("Falling back to absolute paths. Encountered exception:")
-                print(e)
+                # print("Falling back to absolute paths. Encountered exception:")
+                # print(e)
                 segl.filename = str(os.path.abspath(segl.filename))
 
         # now, generate the actual files, SEPARATELY FOR EACH SPECIES:
         for species in speciesList:
-            print("Exporting species %s" % species)
+            # print("Exporting species %s" % species)
             # clean version for filename
             speciesClean = re.sub(r"\W", "_", species)
 
@@ -833,10 +810,10 @@ class ExcelIO:
                     print(
                         "ERROR: cannot open file %s to append" % eFile
                     )  # no read permissions or smth
-                    print(e)
+                    # print(e)
                     return 0
             else:
-                print("ERROR: unrecognised action", action)
+                # print("ERROR: unrecognised action", action)
                 return 0
 
             # export segments
@@ -884,6 +861,6 @@ class ExcelIO:
                 print(
                     "ERROR: could not create new file %s" % eFile
                 )  # no read permissions or smth
-                print(e)
+                # print(e)
                 return 0
         return 1

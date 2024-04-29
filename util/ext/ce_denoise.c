@@ -6218,7 +6218,7 @@ static PyObject *__pyx_pf_10ce_denoise_2BestTree2(CYTHON_UNUSED PyObject *__pyx_
  *                         cost[count] = ce_getcost(<double*> np.PyArray_DATA(node), node.shape[0], threshold, '*', step)
  * 
  *                 count += 1             # <<<<<<<<<<<<<<
- *         print("Best basis selected in %.5f s" % (time.time() - opstartingtime))
+ *         # print("Best basis selected in %.5f s" % (time.time() - opstartingtime))
  * 
  */
     __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_v_count, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
@@ -6239,7 +6239,7 @@ static PyObject *__pyx_pf_10ce_denoise_2BestTree2(CYTHON_UNUSED PyObject *__pyx_
   /* "ce_denoise.pyx":80
  * 
  *                 count += 1
- *         print("Best basis selected in %.5f s" % (time.time() - opstartingtime))             # <<<<<<<<<<<<<<
+ *         # print("Best basis selected in %.5f s" % (time.time() - opstartingtime))             # <<<<<<<<<<<<<<
  * 
  *         # Compute the best tree using those cost values
  */
@@ -7185,7 +7185,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *     bestleavesset = set(bestleaves)
  *     N = len(bestleavesset)             # <<<<<<<<<<<<<<
  *     if list(bestleavesset) != bestleaves:
- *         print("Warning: best leaves were not sorted, make sure threshold order is the same")
+ *         # print("Warning: best leaves were not sorted, make sure threshold order is the same")
  */
   __pyx_t_2 = __Pyx_PySet_GET_SIZE(__pyx_v_bestleavesset); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
   __pyx_v_N = __pyx_t_2;
@@ -7194,7 +7194,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *     bestleavesset = set(bestleaves)
  *     N = len(bestleavesset)
  *     if list(bestleavesset) != bestleaves:             # <<<<<<<<<<<<<<
- *         print("Warning: best leaves were not sorted, make sure threshold order is the same")
+ *         # print("Warning: best leaves were not sorted, make sure threshold order is the same")
  *         # could return an error
  */
   __pyx_t_1 = PySequence_List(__pyx_v_bestleavesset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
@@ -7208,7 +7208,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     /* "ce_denoise.pyx":156
  *     N = len(bestleavesset)
  *     if list(bestleavesset) != bestleaves:
- *         print("Warning: best leaves were not sorted, make sure threshold order is the same")             # <<<<<<<<<<<<<<
+ *         # print("Warning: best leaves were not sorted, make sure threshold order is the same")             # <<<<<<<<<<<<<<
  *         # could return an error
  * 
  */
@@ -7220,7 +7220,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *     bestleavesset = set(bestleaves)
  *     N = len(bestleavesset)
  *     if list(bestleavesset) != bestleaves:             # <<<<<<<<<<<<<<
- *         print("Warning: best leaves were not sorted, make sure threshold order is the same")
+ *         # print("Warning: best leaves were not sorted, make sure threshold order is the same")
  *         # could return an error
  */
   }
@@ -7240,7 +7240,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # fix at some point.
  *         T = len(oldtree[0]) // blocklen             # <<<<<<<<<<<<<<
  *         if T<1:
- *             print("ERROR: data shorter than the block size")
+ *             # print("ERROR: data shorter than the block size")
  */
     if (unlikely(__pyx_v_oldtree == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -7264,7 +7264,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # fix at some point.
  *         T = len(oldtree[0]) // blocklen
  *         if T<1:             # <<<<<<<<<<<<<<
- *             print("ERROR: data shorter than the block size")
+ *             # print("ERROR: data shorter than the block size")
  *             return 1
  */
     __pyx_t_4 = (__pyx_v_T < 1);
@@ -7273,7 +7273,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       /* "ce_denoise.pyx":168
  *         T = len(oldtree[0]) // blocklen
  *         if T<1:
- *             print("ERROR: data shorter than the block size")             # <<<<<<<<<<<<<<
+ *             # print("ERROR: data shorter than the block size")             # <<<<<<<<<<<<<<
  *             return 1
  *     else:
  */
@@ -7283,7 +7283,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":169
  *         if T<1:
- *             print("ERROR: data shorter than the block size")
+ *             # print("ERROR: data shorter than the block size")
  *             return 1             # <<<<<<<<<<<<<<
  *     else:
  *         # will keep data in a single block
@@ -7297,7 +7297,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # fix at some point.
  *         T = len(oldtree[0]) // blocklen
  *         if T<1:             # <<<<<<<<<<<<<<
- *             print("ERROR: data shorter than the block size")
+ *             # print("ERROR: data shorter than the block size")
  *             return 1
  */
     }
@@ -7329,7 +7329,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  * 
  *     if np.ndim(threshold)==0:             # <<<<<<<<<<<<<<
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")
+ *         # print("Applying constant threshold over nodes and time")
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -7366,7 +7366,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  * 
  *     if np.ndim(threshold)==0:
  *         threshold = threshold * np.ones((N,T))             # <<<<<<<<<<<<<<
- *         print("Applying constant threshold over nodes and time")
+ *         # print("Applying constant threshold over nodes and time")
  *     elif type(threshold) is np.ndarray:
  */
     __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 175, __pyx_L1_error)
@@ -7418,7 +7418,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     /* "ce_denoise.pyx":176
  *     if np.ndim(threshold)==0:
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
+ *         # print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
  *     elif type(threshold) is np.ndarray:
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  */
@@ -7431,14 +7431,14 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  * 
  *     if np.ndim(threshold)==0:             # <<<<<<<<<<<<<<
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")
+ *         # print("Applying constant threshold over nodes and time")
  */
     goto __pyx_L6;
   }
 
   /* "ce_denoise.pyx":177
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")
+ *         # print("Applying constant threshold over nodes and time")
  *     elif type(threshold) is np.ndarray:             # <<<<<<<<<<<<<<
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):
@@ -7451,7 +7451,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):             # <<<<<<<<<<<<<<
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -7528,7 +7528,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):
  *             threshold = threshold * np.ones((N,T))             # <<<<<<<<<<<<<<
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):
  */
       __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 180, __pyx_L1_error)
@@ -7580,9 +7580,9 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       /* "ce_denoise.pyx":181
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
+ *             # print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  */
       __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
@@ -7593,16 +7593,16 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):             # <<<<<<<<<<<<<<
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  */
       goto __pyx_L7;
     }
 
     /* "ce_denoise.pyx":182
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):             # <<<<<<<<<<<<<<
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  *             threshold = np.transpose(threshold * np.ones((T,N)))
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
@@ -7696,11 +7696,11 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     if (__pyx_t_4) {
 
       /* "ce_denoise.pyx":183
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):
- *             print(np.shape(threshold))             # <<<<<<<<<<<<<<
+ *             # print(np.shape(threshold))             # <<<<<<<<<<<<<<
  *             threshold = np.transpose(threshold * np.ones((T,N)))
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  */
       __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
@@ -7736,10 +7736,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":184
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  *             threshold = np.transpose(threshold * np.ones((T,N)))             # <<<<<<<<<<<<<<
- *             print(np.shape(threshold))
- *             print("Applying node-specific, time-constant threshold")
+ *             # print(np.shape(threshold))
+ *             # print("Applying node-specific, time-constant threshold")
  */
       __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
@@ -7816,10 +7816,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       __pyx_t_5 = 0;
 
       /* "ce_denoise.pyx":185
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  *             threshold = np.transpose(threshold * np.ones((T,N)))
- *             print(np.shape(threshold))             # <<<<<<<<<<<<<<
- *             print("Applying node-specific, time-constant threshold")
+ *             # print(np.shape(threshold))             # <<<<<<<<<<<<<<
+ *             # print("Applying node-specific, time-constant threshold")
  *         elif np.shape(threshold)==(N,T):
  */
       __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
@@ -7856,8 +7856,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":186
  *             threshold = np.transpose(threshold * np.ones((T,N)))
- *             print(np.shape(threshold))
- *             print("Applying node-specific, time-constant threshold")             # <<<<<<<<<<<<<<
+ *             # print(np.shape(threshold))
+ *             # print("Applying node-specific, time-constant threshold")             # <<<<<<<<<<<<<<
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:
  */
@@ -7867,20 +7867,20 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":182
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  *         elif np.shape(threshold)==(N,) or np.shape(threshold)==(N,1):             # <<<<<<<<<<<<<<
- *             print(np.shape(threshold))
+ *             # print(np.shape(threshold))
  *             threshold = np.transpose(threshold * np.ones((T,N)))
  */
       goto __pyx_L7;
     }
 
     /* "ce_denoise.pyx":187
- *             print(np.shape(threshold))
- *             print("Applying node-specific, time-constant threshold")
+ *             # print(np.shape(threshold))
+ *             # print("Applying node-specific, time-constant threshold")
  *         elif np.shape(threshold)==(N,T):             # <<<<<<<<<<<<<<
  *             if blocklen==0:
- *                 print("ERROR: blocklen must be provided for NxT thresholding")
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")
  */
     __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
@@ -7929,10 +7929,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     if (__pyx_t_4) {
 
       /* "ce_denoise.pyx":188
- *             print("Applying node-specific, time-constant threshold")
+ *             # print("Applying node-specific, time-constant threshold")
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:             # <<<<<<<<<<<<<<
- *                 print("ERROR: blocklen must be provided for NxT thresholding")
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")
  *                 return 1
  */
       __pyx_t_4 = (__pyx_v_blocklen == 0);
@@ -7941,7 +7941,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
         /* "ce_denoise.pyx":189
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:
- *                 print("ERROR: blocklen must be provided for NxT thresholding")             # <<<<<<<<<<<<<<
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")             # <<<<<<<<<<<<<<
  *                 return 1
  *             else:
  */
@@ -7951,10 +7951,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
         /* "ce_denoise.pyx":190
  *             if blocklen==0:
- *                 print("ERROR: blocklen must be provided for NxT thresholding")
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")
  *                 return 1             # <<<<<<<<<<<<<<
  *             else:
- *                 print("will use blocks of", blocklen, "samples")
+ *                 # print("will use blocks of", blocklen, "samples")
  */
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(__pyx_int_1);
@@ -7962,10 +7962,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
         goto __pyx_L0;
 
         /* "ce_denoise.pyx":188
- *             print("Applying node-specific, time-constant threshold")
+ *             # print("Applying node-specific, time-constant threshold")
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:             # <<<<<<<<<<<<<<
- *                 print("ERROR: blocklen must be provided for NxT thresholding")
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")
  *                 return 1
  */
       }
@@ -7973,8 +7973,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       /* "ce_denoise.pyx":192
  *                 return 1
  *             else:
- *                 print("will use blocks of", blocklen, "samples")             # <<<<<<<<<<<<<<
- *             print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
+ *                 # print("will use blocks of", blocklen, "samples")             # <<<<<<<<<<<<<<
+ *             # print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
  *         else:
  */
       /*else*/ {
@@ -7999,10 +7999,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":193
  *             else:
- *                 print("will use blocks of", blocklen, "samples")
- *             print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)             # <<<<<<<<<<<<<<
+ *                 # print("will use blocks of", blocklen, "samples")
+ *             # print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)             # <<<<<<<<<<<<<<
  *         else:
- *             print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
+ *             # print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
  */
       __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_blocklen); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -8015,19 +8015,19 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
       /* "ce_denoise.pyx":187
- *             print(np.shape(threshold))
- *             print("Applying node-specific, time-constant threshold")
+ *             # print(np.shape(threshold))
+ *             # print("Applying node-specific, time-constant threshold")
  *         elif np.shape(threshold)==(N,T):             # <<<<<<<<<<<<<<
  *             if blocklen==0:
- *                 print("ERROR: blocklen must be provided for NxT thresholding")
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")
  */
       goto __pyx_L7;
     }
 
     /* "ce_denoise.pyx":195
- *             print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
+ *             # print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
  *         else:
- *             print("ERROR: threshold shape %d x %d unrecognized" % (N, T))             # <<<<<<<<<<<<<<
+ *             # print("ERROR: threshold shape %d x %d unrecognized" % (N, T))             # <<<<<<<<<<<<<<
  *             return 1
  *     else:
  */
@@ -8054,10 +8054,10 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
       /* "ce_denoise.pyx":196
  *         else:
- *             print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
+ *             # print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
  *             return 1             # <<<<<<<<<<<<<<
  *     else:
- *         print("ERROR: wrong type of threshold provided")
+ *         # print("ERROR: wrong type of threshold provided")
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_int_1);
@@ -8068,7 +8068,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
     /* "ce_denoise.pyx":177
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")
+ *         # print("Applying constant threshold over nodes and time")
  *     elif type(threshold) is np.ndarray:             # <<<<<<<<<<<<<<
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):
@@ -8079,7 +8079,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
   /* "ce_denoise.pyx":198
  *             return 1
  *     else:
- *         print("ERROR: wrong type of threshold provided")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: wrong type of threshold provided")             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
@@ -8090,7 +8090,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
     /* "ce_denoise.pyx":199
  *     else:
- *         print("ERROR: wrong type of threshold provided")
+ *         # print("ERROR: wrong type of threshold provided")
  *         return 1             # <<<<<<<<<<<<<<
  * 
  *     # a dumb check, but important
@@ -8106,8 +8106,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  * 
  *     # a dumb check, but important
  *     if np.shape(threshold)!=(N,T):             # <<<<<<<<<<<<<<
- *         print("ERROR: something went wrong in denoising")
- *         print(np.shape(threshold))
+ *         # print("ERROR: something went wrong in denoising")
+ *         # print(np.shape(threshold))
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -8158,8 +8158,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     /* "ce_denoise.pyx":203
  *     # a dumb check, but important
  *     if np.shape(threshold)!=(N,T):
- *         print("ERROR: something went wrong in denoising")             # <<<<<<<<<<<<<<
- *         print(np.shape(threshold))
+ *         # print("ERROR: something went wrong in denoising")             # <<<<<<<<<<<<<<
+ *         # print(np.shape(threshold))
  *         return 1
  */
     __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
@@ -8168,8 +8168,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
     /* "ce_denoise.pyx":204
  *     if np.shape(threshold)!=(N,T):
- *         print("ERROR: something went wrong in denoising")
- *         print(np.shape(threshold))             # <<<<<<<<<<<<<<
+ *         # print("ERROR: something went wrong in denoising")
+ *         # print(np.shape(threshold))             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
@@ -8206,8 +8206,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
     /* "ce_denoise.pyx":205
- *         print("ERROR: something went wrong in denoising")
- *         print(np.shape(threshold))
+ *         # print("ERROR: something went wrong in denoising")
+ *         # print(np.shape(threshold))
  *         return 1             # <<<<<<<<<<<<<<
  * 
  *     thrtype_ce = -1
@@ -8221,8 +8221,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  * 
  *     # a dumb check, but important
  *     if np.shape(threshold)!=(N,T):             # <<<<<<<<<<<<<<
- *         print("ERROR: something went wrong in denoising")
- *         print(np.shape(threshold))
+ *         # print("ERROR: something went wrong in denoising")
+ *         # print(np.shape(threshold))
  */
   }
 
@@ -8279,7 +8279,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
  *     elif thrtype=="hard":
  *         thrtype_ce = 2             # <<<<<<<<<<<<<<
  *     else:
- *         print("ERROR: type of threshold not recognized")
+ *         # print("ERROR: type of threshold not recognized")
  */
     __pyx_v_thrtype_ce = 2;
 
@@ -8296,7 +8296,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
   /* "ce_denoise.pyx":213
  *         thrtype_ce = 2
  *     else:
- *         print("ERROR: type of threshold not recognized")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: type of threshold not recognized")             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
@@ -8307,7 +8307,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
 
     /* "ce_denoise.pyx":214
  *     else:
- *         print("ERROR: type of threshold not recognized")
+ *         # print("ERROR: type of threshold not recognized")
  *         return 1             # <<<<<<<<<<<<<<
  * 
  *     # Main loop
@@ -8320,8 +8320,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
   __pyx_L14:;
 
   /* "ce_denoise.pyx":219
- *     #print("Bestleaves", bestleaves)
- *     #print("thresholds", threshold[:,0])
+ *     ## print("Bestleaves", bestleaves)
+ *     ## print("thresholds", threshold[:,0])
  *     for node in range(len(oldtree)):             # <<<<<<<<<<<<<<
  *         if node in bestleavesset:
  *             # then keep & threshold (inplace)
@@ -8393,7 +8393,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     __pyx_t_1 = 0;
 
     /* "ce_denoise.pyx":220
- *     #print("thresholds", threshold[:,0])
+ *     ## print("thresholds", threshold[:,0])
  *     for node in range(len(oldtree)):
  *         if node in bestleavesset:             # <<<<<<<<<<<<<<
  *             # then keep & threshold (inplace)
@@ -8744,7 +8744,7 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
       __pyx_L18:;
 
       /* "ce_denoise.pyx":220
- *     #print("thresholds", threshold[:,0])
+ *     ## print("thresholds", threshold[:,0])
  *     for node in range(len(oldtree)):
  *         if node in bestleavesset:             # <<<<<<<<<<<<<<
  *             # then keep & threshold (inplace)
@@ -8809,8 +8809,8 @@ static PyObject *__pyx_pf_10ce_denoise_6ThresholdNodes2(CYTHON_UNUSED PyObject *
     __pyx_L17:;
 
     /* "ce_denoise.pyx":219
- *     #print("Bestleaves", bestleaves)
- *     #print("thresholds", threshold[:,0])
+ *     ## print("Bestleaves", bestleaves)
+ *     ## print("thresholds", threshold[:,0])
  *     for node in range(len(oldtree)):             # <<<<<<<<<<<<<<
  *         if node in bestleavesset:
  *             # then keep & threshold (inplace)
@@ -9966,7 +9966,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
  *     cdef int datau_len, wv_hi_len, wv_lo_len, data_len
  * 
  *     if lvl==0:             # <<<<<<<<<<<<<<
- *         print("Warning: reconstruction from level 0 requested")
+ *         # print("Warning: reconstruction from level 0 requested")
  *         return data
  */
   __pyx_t_4 = (__pyx_v_lvl == 0);
@@ -9975,7 +9975,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
     /* "ce_denoise.pyx":282
  * 
  *     if lvl==0:
- *         print("Warning: reconstruction from level 0 requested")             # <<<<<<<<<<<<<<
+ *         # print("Warning: reconstruction from level 0 requested")             # <<<<<<<<<<<<<<
  *         return data
  *     elif lvl<0:
  */
@@ -9985,10 +9985,10 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
 
     /* "ce_denoise.pyx":283
  *     if lvl==0:
- *         print("Warning: reconstruction from level 0 requested")
+ *         # print("Warning: reconstruction from level 0 requested")
  *         return data             # <<<<<<<<<<<<<<
  *     elif lvl<0:
- *         print("ERROR: suggested level %d < 0" % lvl)
+ *         # print("ERROR: suggested level %d < 0" % lvl)
  */
     __Pyx_XDECREF(__pyx_r);
     __Pyx_INCREF((PyObject *)__pyx_v_data);
@@ -9999,16 +9999,16 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
  *     cdef int datau_len, wv_hi_len, wv_lo_len, data_len
  * 
  *     if lvl==0:             # <<<<<<<<<<<<<<
- *         print("Warning: reconstruction from level 0 requested")
+ *         # print("Warning: reconstruction from level 0 requested")
  *         return data
  */
   }
 
   /* "ce_denoise.pyx":284
- *         print("Warning: reconstruction from level 0 requested")
+ *         # print("Warning: reconstruction from level 0 requested")
  *         return data
  *     elif lvl<0:             # <<<<<<<<<<<<<<
- *         print("ERROR: suggested level %d < 0" % lvl)
+ *         # print("ERROR: suggested level %d < 0" % lvl)
  *         return
  */
   __pyx_t_4 = (__pyx_v_lvl < 0);
@@ -10017,7 +10017,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
     /* "ce_denoise.pyx":285
  *         return data
  *     elif lvl<0:
- *         print("ERROR: suggested level %d < 0" % lvl)             # <<<<<<<<<<<<<<
+ *         # print("ERROR: suggested level %d < 0" % lvl)             # <<<<<<<<<<<<<<
  *         return
  * 
  */
@@ -10033,7 +10033,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
 
     /* "ce_denoise.pyx":286
  *     elif lvl<0:
- *         print("ERROR: suggested level %d < 0" % lvl)
+ *         # print("ERROR: suggested level %d < 0" % lvl)
  *         return             # <<<<<<<<<<<<<<
  * 
  *     wv_hi_len = len(wv_rec_hi)
@@ -10043,10 +10043,10 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
     goto __pyx_L0;
 
     /* "ce_denoise.pyx":284
- *         print("Warning: reconstruction from level 0 requested")
+ *         # print("Warning: reconstruction from level 0 requested")
  *         return data
  *     elif lvl<0:             # <<<<<<<<<<<<<<
- *         print("ERROR: suggested level %d < 0" % lvl)
+ *         # print("ERROR: suggested level %d < 0" % lvl)
  *         return
  */
   }
@@ -10415,7 +10415,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
  *                 <double*> np.PyArray_DATA(datau), datau_len)
  * 
  *         if c_exit_code!=0:             # <<<<<<<<<<<<<<
- *             print("ERROR: Cythonized convolution failed")
+ *             # print("ERROR: Cythonized convolution failed")
  *             return
  */
     __pyx_t_4 = (__pyx_v_c_exit_code != 0);
@@ -10424,7 +10424,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
       /* "ce_denoise.pyx":328
  * 
  *         if c_exit_code!=0:
- *             print("ERROR: Cythonized convolution failed")             # <<<<<<<<<<<<<<
+ *             # print("ERROR: Cythonized convolution failed")             # <<<<<<<<<<<<<<
  *             return
  * 
  */
@@ -10434,7 +10434,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
 
       /* "ce_denoise.pyx":329
  *         if c_exit_code!=0:
- *             print("ERROR: Cythonized convolution failed")
+ *             # print("ERROR: Cythonized convolution failed")
  *             return             # <<<<<<<<<<<<<<
  * 
  *         # move output back on top of input for next loop
@@ -10447,7 +10447,7 @@ static PyObject *__pyx_pf_10ce_denoise_12reconstruct(CYTHON_UNUSED PyObject *__p
  *                 <double*> np.PyArray_DATA(datau), datau_len)
  * 
  *         if c_exit_code!=0:             # <<<<<<<<<<<<<<
- *             print("ERROR: Cythonized convolution failed")
+ *             # print("ERROR: Cythonized convolution failed")
  *             return
  */
     }
@@ -10913,7 +10913,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":156
  *     N = len(bestleavesset)
  *     if list(bestleavesset) != bestleaves:
- *         print("Warning: best leaves were not sorted, make sure threshold order is the same")             # <<<<<<<<<<<<<<
+ *         # print("Warning: best leaves were not sorted, make sure threshold order is the same")             # <<<<<<<<<<<<<<
  *         # could return an error
  * 
  */
@@ -10924,7 +10924,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":168
  *         T = len(oldtree[0]) // blocklen
  *         if T<1:
- *             print("ERROR: data shorter than the block size")             # <<<<<<<<<<<<<<
+ *             # print("ERROR: data shorter than the block size")             # <<<<<<<<<<<<<<
  *             return 1
  *     else:
  */
@@ -10935,7 +10935,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":176
  *     if np.ndim(threshold)==0:
  *         threshold = threshold * np.ones((N,T))
- *         print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
+ *         # print("Applying constant threshold over nodes and time")             # <<<<<<<<<<<<<<
  *     elif type(threshold) is np.ndarray:
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  */
@@ -10948,7 +10948,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         # checking for both 1D and 2D arrays to allow simple scripts outside for prep
  *         if np.shape(threshold)==(1,) or np.shape(threshold)==(1,1):             # <<<<<<<<<<<<<<
  *             threshold = threshold * np.ones((N,T))
- *             print("Applying constant threshold over nodes and time")
+ *             # print("Applying constant threshold over nodes and time")
  */
   __pyx_tuple__9 = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
@@ -10959,8 +10959,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "ce_denoise.pyx":186
  *             threshold = np.transpose(threshold * np.ones((T,N)))
- *             print(np.shape(threshold))
- *             print("Applying node-specific, time-constant threshold")             # <<<<<<<<<<<<<<
+ *             # print(np.shape(threshold))
+ *             # print("Applying node-specific, time-constant threshold")             # <<<<<<<<<<<<<<
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:
  */
@@ -10971,7 +10971,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":189
  *         elif np.shape(threshold)==(N,T):
  *             if blocklen==0:
- *                 print("ERROR: blocklen must be provided for NxT thresholding")             # <<<<<<<<<<<<<<
+ *                 # print("ERROR: blocklen must be provided for NxT thresholding")             # <<<<<<<<<<<<<<
  *                 return 1
  *             else:
  */
@@ -10982,7 +10982,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":198
  *             return 1
  *     else:
- *         print("ERROR: wrong type of threshold provided")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: wrong type of threshold provided")             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
@@ -10993,8 +10993,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":203
  *     # a dumb check, but important
  *     if np.shape(threshold)!=(N,T):
- *         print("ERROR: something went wrong in denoising")             # <<<<<<<<<<<<<<
- *         print(np.shape(threshold))
+ *         # print("ERROR: something went wrong in denoising")             # <<<<<<<<<<<<<<
+ *         # print(np.shape(threshold))
  *         return 1
  */
   __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_ERROR_something_went_wrong_in_de); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 203, __pyx_L1_error)
@@ -11004,7 +11004,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":213
  *         thrtype_ce = 2
  *     else:
- *         print("ERROR: type of threshold not recognized")             # <<<<<<<<<<<<<<
+ *         # print("ERROR: type of threshold not recognized")             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
@@ -11026,7 +11026,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":282
  * 
  *     if lvl==0:
- *         print("Warning: reconstruction from level 0 requested")             # <<<<<<<<<<<<<<
+ *         # print("Warning: reconstruction from level 0 requested")             # <<<<<<<<<<<<<<
  *         return data
  *     elif lvl<0:
  */
@@ -11037,7 +11037,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "ce_denoise.pyx":328
  * 
  *         if c_exit_code!=0:
- *             print("ERROR: Cythonized convolution failed")             # <<<<<<<<<<<<<<
+ *             # print("ERROR: Cythonized convolution failed")             # <<<<<<<<<<<<<<
  *             return
  * 
  */

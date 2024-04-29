@@ -131,10 +131,10 @@ class WaveletFunctions:
         Stores some basic properties of the data (samplerate).
         """
         if data is None:
-            print("ERROR: data must be provided")
+            # print("ERROR: data must be provided")
             return
         if wavelet is None:
-            print("ERROR: wavelet must be provided")
+            # print("ERROR: wavelet must be provided")
             return
 
         self.data = data
@@ -279,13 +279,13 @@ class WaveletFunctions:
             )
             return
         if len(nodes) == 0 or not isinstance(nodes[0], int):
-            print("ERROR: must provide a list of integer node IDs")
+            # print("ERROR: must provide a list of integer node IDs")
             return
 
         # identify max decomposition level
         maxlevel = math.floor(math.log2(max(nodes) + 1))
         if maxlevel > 10:
-            print("ERROR: got level above 10, probably the nodes are specified badly")
+            # print("ERROR: got level above 10, probably the nodes are specified badly")
             return
 
         # determine which nodes need to be produced (all parents of provided nodes)
@@ -313,7 +313,7 @@ class WaveletFunctions:
         self.tree = [self.data]
 
         if mode != "symmetric":
-            print("ERROR: only symmetric WP mode implemented so far")
+            # print("ERROR: only symmetric WP mode implemented so far")
             return
 
         # optional filtering instead of FFT squashing.
@@ -385,9 +385,6 @@ class WaveletFunctions:
             else:
                 self.tree.append(np.array([]))
 
-            if antialias:
-                print("Node ", node, " complete.")
-
         # Note: no return value, as it sets a tree on the WF object.
 
     def extractE(self, node, winsize, wpantialias=True):
@@ -417,7 +414,7 @@ class WaveletFunctions:
 
         # or WCperWindow = math.ceil(WCperWindowFull / dsratio)
         WCperWindow = math.ceil(winsize * nodefs)
-        # print("Node %d: %d WCs per window" %(node, WCperWindow))
+        # # print("Node %d: %d WCs per window" %(node, WCperWindow))
 
         # realized window size in s - may differ from the requested one if it is not a multiple of 2^j samples
         realwindow = WCperWindow / nodefs
@@ -445,11 +442,11 @@ class WaveletFunctions:
 
         # Sanity check for all zero cases:
         if not any(C):
-            print("Warning: tree empty at node %d" % node)
+            # print("Warning: tree empty at node %d" % node)
             return np.ndarray()
 
         # Might be useful to track any DC offset
-        # print("DC offset = %.3f" % np.mean(C))
+        # # print("DC offset = %.3f" % np.mean(C))
 
         # convert into a matrix (seconds x wcs in sec), and get the energy of each row (second)
         E = (C**2).reshape((nwindows, WCperWindow)).mean(axis=1)
@@ -487,7 +484,7 @@ class WaveletFunctions:
 
         if antialias:
             if len(data) > 910 * 16000 and not antialiasFilter:
-                print("Size of signal to be reconstructed is", len(data))
+                # print("Size of signal to be reconstructed is", len(data))
                 print(
                     "ERROR: processing of big data chunks is currently disabled. Recommend splitting files to below 15 min chunks. Enable this only if you know what you're doing."
                 )
@@ -499,12 +496,12 @@ class WaveletFunctions:
                 # just stripped to minimum for speed.
                 low = nodepos / numnodes * 2
                 high = (nodepos + 1) / numnodes * 2
-                print("antialiasing by filtering between %.3f-%.3f FN" % (low, high))
+                # print("antialiasing by filtering between %.3f-%.3f FN" % (low, high))
                 data = sp.FastButterworthBandpass(data, low, high)
             else:
                 # OLD METHOD for antialiasing
                 # just setting image frequencies to 0
-                print("antialiasing via FFT")
+                # print("antialiasing via FFT")
                 ft = pyfftw.interfaces.scipy_fftpack.fft(data)
                 ll = len(ft)
                 # to keep: [nodepos/numnodes : (nodepos+1)/numnodes] x Fs
@@ -552,14 +549,14 @@ class WaveletFunctions:
 
         if maxLevel == 0:
             self.maxLevel = self.BestLevel()
-            print("Best level is %d" % self.maxLevel)
+            # print("Best level is %d" % self.maxLevel)
         else:
             self.maxLevel = maxLevel
 
         # Create wavelet decomposition. Note: recommend full AA here
         allnodes = range(2 ** (self.maxLevel + 1) - 1)
         self.WaveletPacket(allnodes, "symmetric", aaWP, antialiasFilter=True)
-        print("Checkpoint 1, %.5f" % (time.time() - opstartingtime))
+        # print("Checkpoint 1, %.5f" % (time.time() - opstartingtime))
 
         datalen = len(self.tree[0])
 
@@ -574,8 +571,8 @@ class WaveletFunctions:
             basisThres = thrMultiplier * np.median(np.abs(det1)) / 0.6745
             bestleaves = ce.BestTree2(self.tree, basisThres, costfn)
             bestleaves = list(set(bestleaves))
-            print("leaves to keep:", bestleaves)
-        print("Checkpoint 2, %.5f" % (time.time() - opstartingtime))
+            # print("leaves to keep:", bestleaves)
+        # print("Checkpoint 2, %.5f" % (time.time() - opstartingtime))
 
         # Estimate the threshold (for each node)
         if noiseest == "const":
@@ -615,7 +612,7 @@ class WaveletFunctions:
             regx = np.log(windnodecenters)
 
             # Regression Y: Extract log energies from the same nodes
-            print("extracting node energy...")
+            # print("extracting node energy...")
             windE = np.zeros((numblocks, len(windnodecenters)))
             for node_ix in range(len(windnodecenters)):
                 node = wind_nodes[node_ix]
@@ -660,9 +657,9 @@ class WaveletFunctions:
 
             threshold *= thrMultiplier
         else:
-            print("ERROR: unknown noise energy estimator ", noiseest)
+            # print("ERROR: unknown noise energy estimator ", noiseest)
             return
-        print("thr shape", np.shape(threshold))
+        # print("thr shape", np.shape(threshold))
 
         # Overwrite the WPT with thresholded versions of the leaves
         exit_code = ce.ThresholdNodes2(
@@ -673,9 +670,9 @@ class WaveletFunctions:
             blocklen=blocklen,
         )
         if exit_code != 0:
-            print("ERROR: ThresholdNodes2 exited with exit code ", exit_code)
+            # print("ERROR: ThresholdNodes2 exited with exit code ", exit_code)
             return
-        print("Checkpoint 3, %.5f" % (time.time() - opstartingtime))
+        # print("Checkpoint 3, %.5f" % (time.time() - opstartingtime))
 
         # Reconstruct the internal nodes and the data
         data = self.tree[0]
@@ -683,7 +680,7 @@ class WaveletFunctions:
         for i in bestleaves:
             tmp = self.reconstructWP2(i, aaRec, True)[0 : len(data)]
             new_signal = new_signal + tmp
-        print("Checkpoint 4, %.5f" % (time.time() - opstartingtime))
+        # print("Checkpoint 4, %.5f" % (time.time() - opstartingtime))
 
         return new_signal
 
