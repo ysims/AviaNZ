@@ -1,0 +1,10 @@
+#Analysis started on 2024 04 29, 13:10:30:
+Bittern
+Wavelets,0,0,False
+Sound Files/FiordlandKiwi_Ruru_5min.wav
+Sound Files/lsk_kaka_5min.wav
+Sound Files/kiwi_1min.wav
+Sound Files/lsk_1min.wav
+Sound Files/NIBrownKiwi_Kaka_5min.wav
+Sound Files/GreatSpottedKiwi_5min.wav
+Sound Files/AustralasianBittern_5min.wav
