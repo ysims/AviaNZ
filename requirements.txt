@@ -6,7 +6,6 @@
 # pip install -r requirements.txt --user
 # cd ext; python3 setup.py build_ext -i
 
-click==7.0
 Cython==0.29.21
 h5py==2.10.0
 jsonschema==3.1.1
