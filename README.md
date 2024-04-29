@@ -1,17 +1,17 @@
 The AviaNZ project can be found at https://github.com/smarsland/AviaNZ. For more information about the project, see http://www.avianz.net.
 
-This fork is designed to provide a version of AviaNZ that can run on a headless Linux device in real-time. That is, audio is directly sent to the software and the software returns a confidence for that audio snippit.
+This fork is designed to provide a version of AviaNZ that can run on a headless Linux device in real-time. That is, audio is directly sent to the software and the software returns a confidence for that audio snippit. Some library API calls have been updated to work with later versions of the packages. This fork has been developed with Python 3.10.
 
 # Installation
 
 1. `git clone https://github.com/ysims/AviaNZ`
 2. `pip3 install -r requirements.txt`
 3. Build the Cython extensions by running `cd util/ext; python3 setup.py build_ext -i; cd ../..`
-4. `python3 AviaNZ.py -d <path/to/sound_files> -r <model_name>`
+4. `python3 AviaNZ.py -f <path/to/file> -r <model_name>`
 
-Where `<path/to/sound_files>` is the path to a folder of wav file and `<model_name>` is the name of the recogniser in the `filters` folder you want to use.
+Where `<path/to/file>` is the path to a wav file and `<model_name>` is the name of the recogniser in the `filters` folder you want to use.
 
-An example is `python3 AviaNZ.py -d sound_files/ -r Bittern`.
+An example is `python3 AviaNZ.py -f sound_files/AustralasianBittern_5min.wav -r Bittern`.
 
 # Acknowledgements
 
