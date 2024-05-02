@@ -153,7 +153,7 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
     bestleavesset = set(bestleaves)
     N = len(bestleavesset)
     if list(bestleavesset) != bestleaves:
-        # print("Warning: best leaves were not sorted, make sure threshold order is the same")
+        print("Warning: best leaves were not sorted, make sure threshold order is the same")
         # could return an error
 
     # Input checks
@@ -189,7 +189,7 @@ def ThresholdNodes2(list oldtree, list bestleaves, threshold, str thrtype, int b
                 # print("ERROR: blocklen must be provided for NxT thresholding")
                 return 1
             else:
-                # print("will use blocks of", blocklen, "samples")
+                print("will use blocks of", blocklen, "samples")
             # print("Applying node- and time-specific threshold over blocks of %d samples" % blocklen)
         else:
             # print("ERROR: threshold shape %d x %d unrecognized" % (N, T))
